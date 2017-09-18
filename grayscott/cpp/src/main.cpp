@@ -2,13 +2,14 @@
 #include <iostream>
 #include "xtensor/xarray.hpp"
 #include "xtensor/xnoalias.hpp"
+#include "xtensor/xtensor.hpp"
 #include "xtensor/xview.hpp"
 
-xt::xarray<double> gray_scott(std::size_t counts, double du, double dv, double f, double k)
+xt::xtensor<double, 2> gray_scott(std::size_t counts, double du, double dv, double f, double k)
 {
     int n = 300;
-    xt::xarray<double> U = xt::zeros<double>({n+2, n+2});
-    xt::xarray<double> V = xt::zeros<double>({n+2, n+2});
+    xt::xtensor<double, 2> U = xt::zeros<double>({n+2, n+2});
+    xt::xtensor<double, 2> V = xt::zeros<double>({n+2, n+2});
 
     auto u = xt::view(U, xt::range(1, n+1), xt::range(1, n+1));
     auto v = xt::view(V, xt::range(1, n+1), xt::range(1, n+1));
@@ -21,7 +22,7 @@ xt::xarray<double> gray_scott(std::size_t counts, double du, double dv, double f
     xt::noalias(u) += 0.15 * xt::ones<double>({n, n});
     xt::noalias(v) += 0.15 * xt::ones<double>({n, n});
 
-    xt::xarray<double> uvv(u.shape());
+    xt::xtensor<double, 2> uvv(u.shape());
     for(std::size_t i = 0; i < counts; ++i)
     {
         auto lu =     xt::view(U, xt::range(0, n),   xt::range(1, n+1)) +
